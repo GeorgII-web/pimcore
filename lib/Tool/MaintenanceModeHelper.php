@@ -52,6 +52,17 @@ class MaintenanceModeHelper implements MaintenanceModeHelperInterface
         \Pimcore::getEventDispatcher()->dispatch(new GenericEvent(), SystemEvents::MAINTENANCE_MODE_DEACTIVATE);
     }
 
+    // Is it enabled globally
+    public function isEnabled(): bool
+    {
+        if ($this->db->isConnected() && $this->getEntry()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Is it activated for an user
     public function isActive(string $matchSessionId = null): bool
     {
         if ($this->db->isConnected() && $maintenanceModeEntry = $this->getEntry()) {
